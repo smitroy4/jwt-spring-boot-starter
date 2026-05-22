@@ -1,3 +1,8 @@
+![Java](https://img.shields.io/badge/Java-21-blue)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3-green)
+![Maven](https://img.shields.io/badge/Maven-Published-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 # jwt-spring-boot-starter
 
 Auto-configured JWT support for Spring Boot 4 — plug in the dependency, configure three properties, and get a production-ready `JwtService` with zero boilerplate.
