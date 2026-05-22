@@ -109,7 +109,7 @@
             </name>
 
             <url>
-                https://maven.pkg.github.com/smitroy4/jwt-core
+                https://maven.pkg.github.com/smitroy4/jwt-spring-boot-starter
             </url>
 
         </repository>
