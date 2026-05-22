@@ -16,23 +16,57 @@
 
         <java.version>21</java.version>
 
+        <maven.compiler.source>
+            21
+        </maven.compiler.source>
+
+        <maven.compiler.target>
+            21
+        </maven.compiler.target>
+
+        <project.build.sourceEncoding>
+            UTF-8
+        </project.build.sourceEncoding>
+
         <spring.boot.version>
             3.5.0
         </spring.boot.version>
 
     </properties>
 
+    <!-- REQUIRED FOR GITHUB ACTIONS -->
+    <repositories>
+
+        <repository>
+
+            <id>github</id>
+
+            <url>
+                https://maven.pkg.github.com/smitroy4/jwt-core
+            </url>
+
+        </repository>
+
+    </repositories>
+
     <dependencies>
 
-        <!-- YOUR JWT CORE -->
+        <!-- JWT CORE -->
         <dependency>
+
             <groupId>com.smit</groupId>
-            <artifactId>jwt-core</artifactId>
+
+            <artifactId>
+                jwt-core
+            </artifactId>
+
             <version>1.0.0</version>
+
         </dependency>
 
         <!-- SPRING BOOT AUTO CONFIG -->
         <dependency>
+
             <groupId>
                 org.springframework.boot
             </groupId>
@@ -44,10 +78,12 @@
             <version>
                 ${spring.boot.version}
             </version>
+
         </dependency>
 
         <!-- CONFIGURATION PROCESSOR -->
         <dependency>
+
             <groupId>
                 org.springframework.boot
             </groupId>
@@ -61,13 +97,22 @@
             </version>
 
             <optional>true</optional>
+
         </dependency>
 
+        <!-- LOMBOK -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
+
+            <groupId>
+                org.projectlombok
+            </groupId>
+
             <artifactId>lombok</artifactId>
+
             <version>1.18.38</version>
+
             <scope>provided</scope>
+
         </dependency>
 
     </dependencies>
@@ -76,7 +121,9 @@
 
         <plugins>
 
+            <!-- JAVA COMPILER -->
             <plugin>
+
                 <groupId>
                     org.apache.maven.plugins
                 </groupId>
@@ -88,8 +135,15 @@
                 <version>3.13.0</version>
 
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+
+                    <source>
+                        ${maven.compiler.source}
+                    </source>
+
+                    <target>
+                        ${maven.compiler.target}
+                    </target>
+
                 </configuration>
 
             </plugin>
@@ -98,6 +152,7 @@
 
     </build>
 
+    <!-- GITHUB PACKAGES DEPLOYMENT -->
     <distributionManagement>
 
         <repository>
