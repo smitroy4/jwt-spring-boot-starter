@@ -15,6 +15,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: read
+
     steps:
 
       - name: Checkout Repository
@@ -28,5 +32,12 @@ jobs:
           java-version: 21
           cache: maven
 
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+
       - name: Build Project
         run: mvn clean install
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
