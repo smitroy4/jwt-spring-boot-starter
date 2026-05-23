@@ -1,65 +1,116 @@
 ![Java](https://img.shields.io/badge/Java-21-blue)
-![Spring Boot](https://img.shields.io/badge/SpringBoot-3-green)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-4-green)
+![Spring Security](https://img.shields.io/badge/SpringSecurity-Integrated-success)
 ![Maven](https://img.shields.io/badge/Maven-Published-orange)
 ![CI](https://img.shields.io/github/actions/workflow/status/smitroy4/jwt-spring-boot-starter/maven.yml)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 # jwt-spring-boot-starter
 
-Auto-configured JWT support for Spring Boot 4 — plug in the dependency, configure three properties, and get a production-ready `JwtService` with zero boilerplate.
+Production-ready JWT authentication starter for Spring Boot.
+
+Plug in the dependency, configure JWT properties, and instantly get:
+
+* JWT token generation
+* JWT validation
+* Spring Security integration
+* automatic authentication filter
+* protected route handling
+* zero boilerplate configuration
 
 ---
 
-## Features
+# Features
 
-- Access token & refresh token generation
-- Claims extraction with type safety
-- Token validation
-- Full Spring Boot auto-configuration via `application.yml`
-- Java 21 + Spring Boot 4.x.x compatible
-- Lightweight — no extra beans, no manual wiring
+## JWT Core Features
+
+* Access token generation
+* Refresh token generation
+* Claims extraction
+* Type-safe claim parsing
+* Token validation
+* Access & refresh token detection
 
 ---
 
-## Installation
+## Spring Security Integration
 
-### 1. Add the GitHub Packages repository
+* Automatic JWT authentication filter registration
+* Automatic Spring Security configuration
+* Bearer token authentication
+* SecurityContext authentication support
+* Route protection
+* Public route exclusion support
+
+---
+
+## Developer Experience
+
+* Fully auto-configured
+* Minimal setup
+* Java 21 compatible
+* Spring Boot 4.x.x compatible
+* Zero manual bean registration
+* Plug-and-play architecture
+
+---
+
+# Installation
+
+## 1. Add GitHub Packages Repository
 
 ```xml
 <repositories>
+
     <repository>
+
         <id>github</id>
-        <url>https://maven.pkg.github.com/smitroy4/jwt-spring-boot-starter</url>
+
+        <url>
+            https://maven.pkg.github.com/smitroy4/jwt-spring-boot-starter
+        </url>
+
     </repository>
+
 </repositories>
 ```
 
-### 2. Add the dependency
+---
+
+## 2. Add Dependency
 
 ```xml
 <dependency>
+
     <groupId>com.smit</groupId>
-    <artifactId>jwt-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+
+    <artifactId>
+        jwt-spring-boot-starter
+    </artifactId>
+
+    <version>1.0.2</version>
+
 </dependency>
 ```
 
 ---
 
-## Configuration
+# Configuration
+
+## application.yml
 
 ```yaml
 jwt:
   secret-key: mysupersecretkeymysupersecretkey123456
-  access-token-expiration: 600000      # 10 minutes (ms)
-  refresh-token-expiration: 604800000  # 7 days (ms)
+  access-token-expiration: 600000
+  refresh-token-expiration: 604800000
 ```
 
 ---
 
-## Usage
+# Quick Start
 
-Inject `JwtService` — it's auto-registered, no `@Bean` needed.
+## Generate Token
 
 ```java
 @RestController
@@ -68,112 +119,235 @@ public class AuthController {
 
     private final JwtService jwtService;
 
-    // Generate access token with custom claims
-    @PostMapping("/auth/token")
-    public String generateToken() {
+    @GetMapping("/auth/token")
+    public String token() {
+
         return jwtService.generateAccessToken(
-            "101",
-            Map.of("email", "user@example.com", "role", "USER")
+                "101",
+                Map.of(
+                        "email",
+                        "admin@test.com",
+                        "role",
+                        "ADMIN"
+                )
         );
-    }
-
-    // Generate refresh token
-    @PostMapping("/auth/refresh")
-    public String generateRefreshToken() {
-        return jwtService.generateRefreshToken("101");
-    }
-
-    // Validate a token
-    @GetMapping("/auth/validate")
-    public boolean validate(@RequestParam String token) {
-        return jwtService.validateToken(token);
-    }
-
-    // Extract subject (user ID)
-    @GetMapping("/auth/subject")
-    public String subject(@RequestParam String token) {
-        return jwtService.extractSubject(token);
-    }
-
-    // Extract a typed claim
-    @GetMapping("/auth/claim")
-    public String email(@RequestParam String token) {
-        return jwtService.extractClaim(token, "email", String.class);
     }
 }
 ```
 
 ---
 
-## How Auto-Configuration Works
+# Protected Route Example
 
-```
-application.yml
-      ↓
-JwtConfigurationProperties   (binds jwt.* properties)
-      ↓
-JwtAutoConfiguration         (registers JwtService bean)
-      ↓
-JwtService                   (available in your application context)
-```
+```java
+@RestController
+public class UserController {
 
-Registered via `META-INF/spring/AutoConfiguration.imports` — standard Spring Boot SPI, no component scanning required.
+    @GetMapping("/user")
+    public String user(
+            Authentication authentication
+    ) {
+
+        return "Authenticated User: "
+                + authentication.getName();
+    }
+}
+```
 
 ---
 
-## Project Structure
+# Authentication Flow
 
+## Step 1 — Generate Token
+
+```http
+GET /auth/token
 ```
+
+Response:
+
+```text
+eyJhbGciOiJIUzI1NiJ9...
+```
+
+---
+
+## Step 2 — Access Protected Endpoint
+
+```http
+GET /user
+Authorization: Bearer YOUR_TOKEN
+```
+
+Response:
+
+```text
+Authenticated User: 101
+```
+
+---
+
+# How It Works
+
+```text
+Incoming Request
+        ↓
+JwtAuthenticationFilter
+        ↓
+Extract Bearer Token
+        ↓
+Validate JWT
+        ↓
+Extract Subject & Claims
+        ↓
+SecurityContext Authentication
+        ↓
+Protected Controller Access
+```
+
+---
+
+# Auto Configuration Architecture
+
+```text
+application.yml
+        ↓
+JwtConfigurationProperties
+        ↓
+JwtAutoConfiguration
+        ↓
+JwtSecurityConfiguration
+        ↓
+JwtAuthenticationFilter
+        ↓
+JwtService
+```
+
+---
+
+# Included Components
+
+## Auto-Configured Beans
+
+* JwtService
+* JwtAuthenticationFilter
+* SecurityFilterChain
+* JwtConfigurationProperties
+
+---
+
+# Overriding Starter Components
+
+The starter is fully extensible.
+
+Applications can override:
+
+* JwtService
+* JwtAuthenticationFilter
+* SecurityFilterChain
+
+simply by defining custom beans.
+
+Example:
+
+```java
+@Bean
+public JwtService jwtService() {
+
+    return new CustomJwtService();
+}
+```
+
+The starter automatically backs off using:
+
+```java
+@ConditionalOnMissingBean
+```
+
+---
+
+# Project Structure
+
+```text
 jwt-spring-boot-starter
+│
 ├── config
-│   └── JwtAutoConfiguration.java
+│   ├── JwtAutoConfiguration
+│   └── JwtSecurityConfiguration
+│
 ├── properties
-│   └── JwtConfigurationProperties.java
+│   └── JwtConfigurationProperties
+│
+├── security
+│   └── JwtAuthenticationFilter
+│
 └── META-INF/spring
     └── AutoConfiguration.imports
 ```
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Language | Java 21 |
-| Framework | Spring Boot 4.x.x |
-| JWT Library | JJWT |
-| Build | Maven |
-| Distribution | GitHub Packages |
-
----
-
-<!--## Roadmap
-
-- [ ] JWT authentication filter
-- [ ] Spring Security integration
-- [ ] Role-based route authorization
-- [ ] Route exclusion config
-- [ ] Token blacklisting
-- [ ] Redis support
-- [ ] RSA key support
-- [ ] OAuth2 compatibility
-- [ ] Custom JWT annotations (`@JwtProtected`, etc.)
-- [ ] Rate limiting integration
--->
----
-
-## Contributing
-
-PRs and feature suggestions are welcome. Open an issue to discuss before submitting a large change.
+| Layer        | Technology        |
+| ------------ | ----------------- |
+| Language     | Java 21           |
+| Framework    | Spring Boot 4.x.x |
+| Security     | Spring Security   |
+| JWT          | JJWT              |
+| Build Tool   | Maven             |
+| Distribution | GitHub Packages   |
+| CI/CD        | GitHub Actions    |
 
 ---
 
-## License
+# Current Security Features
 
-MIT
+* JWT Bearer Authentication
+* Stateless Authentication
+* Automatic Request Filtering
+* SecurityContext Integration
+* Public & Protected Route Handling
 
 ---
 
-## Author
+# Upcoming Features
 
-**Smit Roy** — [github.com/smitroy4](https://github.com/smitroy4)
+* Dynamic excluded routes
+* Role-based authorization
+* Authorities extraction
+* Redis token blacklist
+* Refresh token workflow
+* RSA key support
+* Swagger/OpenAPI integration
+* OAuth2 support
+* Custom JWT annotations
+* Multi-tenant JWT support
+
+---
+
+# Contributing
+
+Contributions, feature ideas, and pull requests are welcome.
+
+Feel free to open issues for:
+
+* bug reports
+* feature requests
+* improvements
+* integrations
+
+---
+
+# License
+
+MIT License
+
+---
+
+# Author
+
+## Smit Roy
+
+GitHub:
+https://github.com/smitroy4
