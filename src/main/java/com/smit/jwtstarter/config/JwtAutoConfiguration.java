@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.smit.jwtstarter.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableConfigurationProperties(
@@ -35,4 +36,16 @@ public class JwtAutoConfiguration {
 
         return new JwtService(jwtProperties);
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(
+            JwtService jwtService
+    ) {
+
+        return new JwtAuthenticationFilter(
+                jwtService
+        );
+    }
+
 }

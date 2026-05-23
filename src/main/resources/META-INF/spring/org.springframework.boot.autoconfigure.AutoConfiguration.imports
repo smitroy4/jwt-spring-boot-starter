@@ -1,1 +1,2 @@
 com.smit.jwtstarter.config.JwtAutoConfiguration
+com.smit.jwtstarter.config.JwtSecurityConfiguration

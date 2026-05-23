@@ -8,7 +8,7 @@
 
     <groupId>com.smit</groupId>
     <artifactId>jwt-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 
     <name>jwt-spring-boot-starter</name>
 
@@ -97,6 +97,40 @@
             </version>
 
             <optional>true</optional>
+
+        </dependency>
+
+        <!-- SPRING SECURITY -->
+        <dependency>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-security
+            </artifactId>
+
+            <version>
+                ${spring.boot.version}
+            </version>
+
+        </dependency>
+
+        <!-- SPRING WEB -->
+        <dependency>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-web
+            </artifactId>
+
+            <version>
+                ${spring.boot.version}
+            </version>
 
         </dependency>
 
