@@ -1,6 +1,7 @@
 ![Java](https://img.shields.io/badge/Java-21-blue)
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-3-green)
 ![Maven](https://img.shields.io/badge/Maven-Published-orange)
+![CI](https://img.shields.io/github/actions/workflow/status/smitroy4/jwt-spring-boot-starter/maven.yml)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 # jwt-spring-boot-starter
